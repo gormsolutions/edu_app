@@ -1,0 +1,78 @@
+{
+ "autoname": "BMUS-.#####",
+ "creation": "2023-01-19 19:02:27.134569",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "xref_user",
+  "ocp_user",
+  "providercallbackhost",
+  "amended_from",
+  "momo_api_key",
+  "momo_access_token"
+ ],
+ "fields": [
+  {
+   "fieldname": "xref_user",
+   "fieldtype": "Data",
+   "label": "X-Reference-Id",
+   "read_only": 1
+  },
+  {
+   "default": "61c20850dc6b4224bb8ad9ab0c762925",
+   "fieldname": "ocp_user",
+   "fieldtype": "Data",
+   "label": "Ocp-Apim-Subscription-Key"
+  },
+  {
+   "default": "localhost:8080",
+   "fieldname": "providercallbackhost",
+   "fieldtype": "Data",
+   "label": "providerCallbackHost"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Momo User Settings",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "momo_api_key",
+   "fieldtype": "Data",
+   "label": "Momo Api Key",
+   "read_only": 1
+  },
+  {
+   "fieldname": "momo_access_token",
+   "fieldtype": "Small Text",
+   "label": "Momo Access Token"
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2023-01-20 20:13:05.201151",
+ "modified_by": "Administrator",
+ "module": "Education App",
+ "name": "Momo User Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

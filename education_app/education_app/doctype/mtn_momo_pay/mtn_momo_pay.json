@@ -1,0 +1,121 @@
+{
+ "autoname": "BMMP-.#####",
+ "creation": "2023-01-19 14:25:38.092513",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer_name",
+  "item",
+  "phone_number",
+  "column_break_4",
+  "currency",
+  "amount",
+  "payeenote",
+  "setings_section",
+  "xref_user",
+  "column_break_11",
+  "authorization",
+  "access_token",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Mtn Momo Pay",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer_name.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Link",
+   "label": "Customer Name",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "payeenote",
+   "fieldtype": "Small Text",
+   "label": "payeeNote"
+  },
+  {
+   "fieldname": "xref_user",
+   "fieldtype": "Data",
+   "label": "X-Reference-Id"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "setings_section",
+   "fieldtype": "Section Break",
+   "label": "setings"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "authorization",
+   "fieldtype": "Data",
+   "label": "Authorization",
+   "read_only": 1
+  },
+  {
+   "fieldname": "access_token",
+   "fieldtype": "Data",
+   "label": "access token"
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2023-01-20 20:24:54.134822",
+ "modified_by": "Administrator",
+ "module": "Education App",
+ "name": "Mtn Momo Pay",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

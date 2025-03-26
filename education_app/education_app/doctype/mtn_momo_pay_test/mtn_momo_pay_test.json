@@ -1,0 +1,128 @@
+{
+ "autoname": "BMMPT-.#####",
+ "creation": "2023-01-20 20:32:52.000190",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer_name",
+  "item",
+  "phone_number",
+  "column_break_4",
+  "currency",
+  "amount",
+  "payeenote",
+  "setings_section",
+  "xref_user",
+  "authorization",
+  "column_break_11",
+  "access_token",
+  "test_field"
+ ],
+ "fields": [
+  {
+   "fetch_from": "customer_name.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Link",
+   "label": "Customer Name",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "payeenote",
+   "fieldtype": "Small Text",
+   "label": "payeeNote"
+  },
+  {
+   "fieldname": "setings_section",
+   "fieldtype": "Section Break",
+   "label": "setings"
+  },
+  {
+   "fieldname": "xref_user",
+   "fieldtype": "Data",
+   "label": "X-Reference-Id"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "authorization",
+   "fieldtype": "Small Text",
+   "label": "Authorization"
+  },
+  {
+   "fieldname": "access_token",
+   "fieldtype": "Small Text",
+   "label": "access token"
+  },
+  {
+   "fieldname": "test_field",
+   "fieldtype": "Data",
+   "label": "test field"
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2023-01-21 09:58:50.746900",
+ "modified_by": "Administrator",
+ "module": "Education App",
+ "name": "Mtn Momo Pay Test",
+ "owner": "paul@gmail.com",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

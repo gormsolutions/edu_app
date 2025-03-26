@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-15 15:43:49.766835",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "school",
+  "year_form",
+  "to",
+  "subjects",
+  "grade"
+ ],
+ "fields": [
+  {
+   "fieldname": "school",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "School"
+  },
+  {
+   "fieldname": "year_form",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Year Form"
+  },
+  {
+   "fieldname": "to",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "To"
+  },
+  {
+   "fieldname": "subjects",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Subjects",
+   "options": "\nBIOLOGY\nPHYSICS\nCHEMISTRY\nMATHEMATICS"
+  },
+  {
+   "fieldname": "grade",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Grade"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-02-15 15:46:05.744719",
+ "modified_by": "Administrator",
+ "module": "Education App",
+ "name": "Senior Six Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

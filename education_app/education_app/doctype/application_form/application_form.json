@@ -1,0 +1,453 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-02-15 14:45:01.715685",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "course_applied_for",
+  "column_break_iodc",
+  "academic_year_of_admission",
+  "section_break_cios",
+  "surname",
+  "other_names",
+  "home_district",
+  "post_address",
+  "telephone_contact",
+  "email_address",
+  "religion_affiliation_and_sect",
+  "next_of_kin",
+  "column_break_emnq",
+  "application_status",
+  "sex",
+  "date_of_birth",
+  "nationality",
+  "marital_status",
+  "physical_address_kin",
+  "telephone_kin",
+  "responsibilty",
+  "medical_information_column",
+  "responsibility",
+  "extracurricular_activities",
+  "sponsor",
+  "name1",
+  "contact",
+  "declaration",
+  "signature_of_the_applicant",
+  "date",
+  "column_break_lvpa",
+  "workbackground",
+  "medical_information",
+  "medication_information",
+  "employers_recommendationcomment",
+  "comment",
+  "for_official_use_only_section",
+  "academic_registrar",
+  "column_break_hqyb",
+  "signature",
+  "date_and_stamp",
+  "section_break_gaku",
+  "note",
+  "place_of_residence_tab",
+  "village",
+  "parish",
+  "column_break_fxvn",
+  "district",
+  "other_district",
+  "sub_county",
+  "educ_background_tab",
+  "senior_four",
+  "senior_six",
+  "for_upgraders_attach",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "course_applied_for",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "COURSE APPLIED FOR",
+   "options": "Program",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_year_of_admission",
+   "fieldtype": "Link",
+   "ignore_xss_filter": 1,
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "ACADEMIC YEAR OF ADMISSION",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_iodc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_cios",
+   "fieldtype": "Section Break",
+   "label": "APPLICANT\u2019S DATA/PARTICULARS"
+  },
+  {
+   "fieldname": "surname",
+   "fieldtype": "Data",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Surname",
+   "reqd": 1
+  },
+  {
+   "fieldname": "other_names",
+   "fieldtype": "Data",
+   "label": "Other Names"
+  },
+  {
+   "fieldname": "sex",
+   "fieldtype": "Link",
+   "label": "Sex",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "home_district",
+   "fieldtype": "Data",
+   "label": "Home District",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "column_break_emnq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Country"
+  },
+  {
+   "fieldname": "religion_affiliation_and_sect",
+   "fieldtype": "Select",
+   "label": "Religion Affiliation and Sect",
+   "options": "\nRoman Catholic\nAnglican\nPentecostal\nSeventh-day Adventist\nBaptist\nMuslim\nOther"
+  },
+  {
+   "fieldname": "marital_status",
+   "fieldtype": "Select",
+   "label": "Marital Status",
+   "options": "\nMarried\nWidowed\nSeparated\nDivorced\nSingle\nOther"
+  },
+  {
+   "fieldname": "place_of_residence_tab",
+   "fieldtype": "Tab Break",
+   "label": "Place of residence"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village"
+  },
+  {
+   "fieldname": "parish",
+   "fieldtype": "Data",
+   "label": "Parish"
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Link",
+   "label": "District",
+   "options": "District"
+  },
+  {
+   "fieldname": "sub_county",
+   "fieldtype": "Data",
+   "label": "Sub County"
+  },
+  {
+   "fieldname": "column_break_fxvn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "post_address",
+   "fieldtype": "Data",
+   "label": "Post Address",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "telephone_contact",
+   "fieldtype": "Data",
+   "label": "Telephone contact",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address"
+  },
+  {
+   "fieldname": "next_of_kin",
+   "fieldtype": "Data",
+   "label": "Next of kin"
+  },
+  {
+   "fieldname": "telephone_kin",
+   "fieldtype": "Data",
+   "label": "Telephone NOK"
+  },
+  {
+   "fieldname": "physical_address_kin",
+   "fieldtype": "Data",
+   "label": "Physical address NOK",
+   "options": "\nMarried\nWidowed\nSeparated\nDivorced\nSingle\nOther"
+  },
+  {
+   "fieldname": "educ_background_tab",
+   "fieldtype": "Tab Break",
+   "label": "Education Background"
+  },
+  {
+   "fieldname": "senior_four",
+   "fieldtype": "Table",
+   "label": "O-LEVEL",
+   "options": "Senior Four Item"
+  },
+  {
+   "fieldname": "senior_six",
+   "fieldtype": "Table",
+   "label": "A-LEVEL",
+   "options": "Senior Four Item"
+  },
+  {
+   "fieldname": "for_upgraders_attach",
+   "fieldtype": "Table",
+   "label": "FOR UPGRADERS ATTACH",
+   "options": "UPGRADERS ATTACH"
+  },
+  {
+   "fieldname": "responsibilty",
+   "fieldtype": "Section Break",
+   "label": "RESPONSIBILITY "
+  },
+  {
+   "fieldname": "responsibility",
+   "fieldtype": "Table",
+   "label": "RESPONSIBILITY HELD WHILE AT SCHOOL, COLLEGE ETC",
+   "options": "RESPONSIBILITY HELD"
+  },
+  {
+   "fieldname": "extracurricular_activities",
+   "fieldtype": "Small Text",
+   "label": "Extracurricular activities"
+  },
+  {
+   "fieldname": "workbackground",
+   "fieldtype": "Table",
+   "label": "WorkBackground (For extension and others where applicable)",
+   "options": "WorkBackground"
+  },
+  {
+   "fieldname": "medical_information_column",
+   "fieldtype": "Column Break",
+   "label": "MEDICAL INFORMATION"
+  },
+  {
+   "fieldname": "employers_recommendationcomment",
+   "fieldtype": "Heading",
+   "label": "Employers Recommendation/Comment"
+  },
+  {
+   "fieldname": "comment",
+   "fieldtype": "Small Text",
+   "label": "Successful applicants who are employed will be required to produce a letter of release from the employer."
+  },
+  {
+   "fieldname": "medical_information",
+   "fieldtype": "Heading",
+   "label": "MEDICAL INFORMATION"
+  },
+  {
+   "fieldname": "medication_information",
+   "fieldtype": "Small Text",
+   "label": "Indicate any disabilities that you have"
+  },
+  {
+   "description": "Indicate the name and contact(s) of the person/Organisation that will be responsible for paying your fees.",
+   "fieldname": "sponsor",
+   "fieldtype": "Heading",
+   "label": "SPONSOR"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Data",
+   "label": "Contact"
+  },
+  {
+   "description": "I hereby declare the information given above is true to the best of my knowledge and any case(s) of wrong information or impersonation whenever discovered will lead to automatic cancellation of the admission",
+   "fieldname": "declaration",
+   "fieldtype": "Heading",
+   "label": "DECLARATION"
+  },
+  {
+   "fieldname": "signature_of_the_applicant",
+   "fieldtype": "Data",
+   "label": "Signature of the Applicant"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "for_official_use_only_section",
+   "fieldtype": "Section Break",
+   "label": "FOR OFFICIAL USE ONLY"
+  },
+  {
+   "fieldname": "academic_registrar",
+   "fieldtype": "Small Text",
+   "label": "Comment of the Academic Registrar."
+  },
+  {
+   "fieldname": "signature",
+   "fieldtype": "Data",
+   "label": "Signature"
+  },
+  {
+   "fieldname": "date_and_stamp",
+   "fieldtype": "Date",
+   "label": "Date and Stamp"
+  },
+  {
+   "default": "(1) Please Attach photocopies of your academic documents and a copy of an original receipt for payment of application forms.\n(2)Applicant will be required to produce Original O-Level and A-level Pass slips (For Diploma Applicants). Identity cards from the former schools, Letter from L.C.I. and Signed by at least three members during the interview",
+   "fieldname": "note",
+   "fieldtype": "Small Text",
+   "label": "Note",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_hqyb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_lvpa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "EDUC-APPFORM-.YYYY.-"
+  },
+  {
+   "fieldname": "application_status",
+   "fieldtype": "Data",
+   "in_filter": 1,
+   "in_standard_filter": 1,
+   "label": "Application Status"
+  },
+  {
+   "fieldname": "section_break_gaku",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "APPLICATION FORM",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "other_district",
+   "fieldtype": "Data",
+   "label": "Other District",
+   "options": "District"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-02-21 19:14:32.934314",
+ "modified_by": "Administrator",
+ "module": "Education App",
+ "name": "APPLICATION FORM",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}

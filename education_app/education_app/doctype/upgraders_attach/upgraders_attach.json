@@ -1,0 +1,52 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-15 15:50:55.657493",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "senior_four",
+  "senior_six",
+  "academic_transcript",
+  "ahpc_registration_cert"
+ ],
+ "fields": [
+  {
+   "fieldname": "senior_four",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "O-level cert"
+  },
+  {
+   "fieldname": "senior_six",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "A-level cert"
+  },
+  {
+   "fieldname": "academic_transcript",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Academic transcript"
+  },
+  {
+   "fieldname": "ahpc_registration_cert",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "AHPC Registration Cert"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-02-15 15:53:59.123682",
+ "modified_by": "Administrator",
+ "module": "Education App",
+ "name": "UPGRADERS ATTACH",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
