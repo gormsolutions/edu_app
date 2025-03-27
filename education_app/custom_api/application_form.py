@@ -1,7 +1,45 @@
 import frappe
 
-@frappe.whitelist()
-def fetch_applications(name=None):
+@frappe.whitelist(allow_guest=True)
+def fetch_applications(name):
+    """
+    Fetches and returns a list of Application Forms with all their fields,
+    including any child tables. Filters by name if provided.
+    
+    Args:
+        name (str, optional): The name of the Application Form to filter by.
+    
+    Returns:
+        list | str: A list of Application Form documents as dictionaries,
+                    "Application Submitted" if submitted, or
+                    "No existing application" if no record is found.
+    """
+    # Build the filters dictionary to only fetch draft applications
+    filters = {"docstatus": 0}  # docstatus 0 = Draft, 1 = Submitted, 2 = Canceled
+    if name:
+        filters["name"] = name
+
+    # Get a list of Application Form names based on the filters
+    application_names = frappe.get_all("APPLICATION FORM", filters=filters, fields=["name"])
+
+    if not application_names:
+        # Check if the application exists but is submitted
+        submitted_application = frappe.get_all("APPLICATION FORM", filters={"name": name, "docstatus": 1})
+        if submitted_application:
+            return "Application Submitted"
+        return "No existing application"
+
+    applications = []
+    for app in application_names:
+        # Fetch the full document for each Application Form
+        doc = frappe.get_doc("APPLICATION FORM", app.name)
+        # Convert the document to a dict, which includes child tables
+        applications.append(doc.as_dict())
+    
+    return applications
+
+@frappe.whitelist(allow_guest=True)
+def fetch_applications_status(applicant_form_id):
     """
     Fetches and returns a list of Application Forms with all their fields,
     including any child tables. Filters by name if provided.
@@ -14,20 +52,18 @@ def fetch_applications(name=None):
     """
     # Build the filters dictionary
     filters = {}
-    if name:
-        filters["name"] = name
+    if applicant_form_id:
+        filters["custom_application_form_id"] = applicant_form_id
 
     # Get a list of Application Form names based on the filters
-    application_names = frappe.get_all("APPLICATION FORM", filters=filters, fields=["name"])
+    application_names = frappe.get_all("Student Applicant",
+                                       filters=filters, fields=[
+                                           "first_name",
+                                            "middle_name","last_name","student_email_id",
+                                            "application_status","name","program"])
     
-    applications = []
-    for app in application_names:
-        # Fetch the full document for each Application Form
-        doc = frappe.get_doc("APPLICATION FORM", app.name)
-        # Convert the document to a dict, which includes child tables
-        applications.append(doc.as_dict())
-    
-    return applications
+   
+    return application_names
 
 
 import frappe
@@ -106,3 +142,20 @@ def get_districts_and_countries():
     except Exception as e:
         frappe.log_error(f"Error fetching districts and countries: {str(e)}")
         return {"districts": [], "countries": []}
+
+
+import frappe
+from frappe.exceptions import ValidationError
+@frappe.whitelist(allow_guest=True)
+def check_existing_application_by_email(email_address):
+    """
+    Checks if an Application Form already exists for the given email address.
+    
+    Args:
+        email_address (str): The email address to check.
+        
+    Raises:
+        ValidationError: If an application form already exists for the given email address.
+    """
+    if frappe.db.exists("APPLICATION FORM", {"email_address": email_address}):
+        frappe.throw("An Application Form already exists for this email address.", ValidationError)
