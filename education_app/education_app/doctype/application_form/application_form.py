@@ -2,7 +2,7 @@ from frappe.model.document import Document
 import frappe
 
 class APPLICATIONFORM(Document):
-    def on_update(self):
+    def on_submit(self):
         # Check if a Student Applicant already exists linked to this Application Form
         student_applicant_name = frappe.db.get_value("Student Applicant", {"custom_application_form_id": self.name}, "name")
         

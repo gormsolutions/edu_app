@@ -266,7 +266,7 @@
   },
   {
    "fieldname": "comment",
-   "fieldtype": "Small Text",
+   "fieldtype": "Long Text",
    "label": "Successful applicants who are employed will be required to produce a letter of release from the employer."
   },
   {
@@ -381,10 +381,11 @@
    "options": "District"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-21 19:14:32.934314",
+ "modified": "2025-04-21 20:23:23.491406",
  "modified_by": "Administrator",
  "module": "Education App",
  "name": "APPLICATION FORM",

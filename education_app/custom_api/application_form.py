@@ -69,6 +69,35 @@ def fetch_applications_status(applicant_form_id):
 import frappe
 import json
 
+# @frappe.whitelist(allow_guest=True)
+# def create_document():
+#     try:
+#         # Fetch JSON data from request
+#         data = frappe.form_dict.get("data")
+
+#         # Debugging: Print received data
+#         frappe.logger().info(f"Received Data: {data}")
+
+#         if not data:
+#             frappe.throw("No data provided", frappe.MandatoryError)
+
+#         # Ensure data is a valid JSON object
+#         if isinstance(data, str):
+#             data = json.loads(data)
+
+#         # Create new document
+#         doc = frappe.get_doc(data)
+#         doc.insert(ignore_permissions=True)
+
+#         return {"message": "Document created successfully", "name": doc.name}
+
+#     except Exception as e:
+#         frappe.logger().error(f"Error: {str(e)}")
+#         frappe.throw(f"Invalid JSON data: {str(e)}")
+
+import frappe
+import json
+
 @frappe.whitelist(allow_guest=True)
 def create_document():
     try:
@@ -85,17 +114,35 @@ def create_document():
         if isinstance(data, str):
             data = json.loads(data)
 
+        # Extract the email address from the data
+        email_address = data.get("email_address")
+        if not email_address:
+            frappe.throw("Email address not provided", frappe.MandatoryError)
+
         # Create new document
         doc = frappe.get_doc(data)
         doc.insert(ignore_permissions=True)
 
-        return {"message": "Document created successfully", "name": doc.name}
+        # Send email with docname
+        subject = f"Application Submitted Successfully: {doc.name}"
+        message = f"Dear {data.get('surname')},<br><br>Your application ({doc.name}) has been received successfully.<br><br>Please keep this document name for reference.<br><br>Thank you."
+
+        frappe.sendmail(
+            recipients=[email_address],
+            subject=subject,
+            message=message,
+            reference_doctype=doc.doctype,
+            reference_name=doc.name
+        )
+
+        return {
+            "message": "Document created successfully. Please check your email for your document name.",
+            "success": True
+        }
 
     except Exception as e:
         frappe.logger().error(f"Error: {str(e)}")
         frappe.throw(f"Invalid JSON data: {str(e)}")
-
-
 
 @frappe.whitelist(allow_guest=True)
 def get_academic_years_and_programs():
@@ -143,6 +190,20 @@ def get_districts_and_countries():
         frappe.log_error(f"Error fetching districts and countries: {str(e)}")
         return {"districts": [], "countries": []}
 
+@frappe.whitelist(allow_guest=True)
+def get_institutions():
+    try:
+        # Fetch all Institution
+        institution = frappe.get_all("Institution", fields=["institution"])
+             
+     
+        return {
+            "institutions": institution,
+        }
+    except Exception as e:
+        frappe.log_error(f"Error fetching institution: {str(e)}")
+        return {"institution": []}
+
 
 import frappe
 from frappe.exceptions import ValidationError
@@ -159,3 +220,25 @@ def check_existing_application_by_email(email_address):
     """
     if frappe.db.exists("APPLICATION FORM", {"email_address": email_address}):
         frappe.throw("An Application Form already exists for this email address.", ValidationError)
+
+
+from frappe.model.document import Document
+from frappe import _
+
+@frappe.whitelist(allow_guest=True)
+def submit_application_form(name):
+    """
+    Submit an Application Form by name if it's in Draft (docstatus=0)
+    """
+    doc = frappe.get_doc("APPLICATION FORM", name)
+
+    if doc.docstatus == 1:
+        return _("Application Form is already submitted.")
+
+    if doc.docstatus == 2:
+        return _("Cannot submit a cancelled Application Form.")
+
+    # Submit the document
+    doc.submit()
+
+    return _("Application Form {0} has been successfully submitted.").format(name)
