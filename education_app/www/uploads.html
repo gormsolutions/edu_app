@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f8fbff, #e0f0ff);
+            padding: 40px;
+            margin: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2a5d9f;
+            margin-bottom: 30px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="file"]:focus {
+            border-color: #2a5d9f;
+            box-shadow: 0 0 8px rgba(42, 93, 159, 0.2);
+            outline: none;
+        }
+
+        button[type="submit"] {
+            background-color: #2a5d9f;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #204d87;
+        }
+
+        #error-messages {
+            color: #d9534f;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+
+            form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Application Form</h2>
+    <form id="application-form" enctype="multipart/form-data">
+        <!-- Course Applied For -->
+        <label for="course_applied_for">Course Applied For:</label>
+        <input type="text" id="course_applied_for" name="course_applied_for" value="Medical Laboratory Technology (Diploma)" required>
+
+        <!-- Academic Year of Admission -->
+        <label for="academic_year_of_admission">Academic Year of Admission:</label>
+        <input type="text" id="academic_year_of_admission" name="academic_year_of_admission" value="2025" required>
+
+        <!-- Surname -->
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" value="Paul" required>
+
+        <!-- Email Address -->
+        <label for="email_address">Email Address:</label>
+        <input type="email" id="email_address" name="email_address" value="mututapaul01@gmail.com" required>
+
+        <!-- File Upload for Senior Four Document -->
+        <label for="senior_four">Upload Senior Four Document (PDF):</label>
+        <input type="file" id="senior_four" name="for_upgraders_attach[0][senior_four]" accept=".pdf" required>
+
+        <!-- File Upload for Academic Transcript -->
+        <label for="academic_transcript">Upload Academic Transcript (PDF):</label>
+        <input type="file" id="academic_transcript" name="for_upgraders_attach[0][academic_transcript]" accept=".pdf" required>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit Application</button>
+    </form>
+
+    <div id="error-messages"></div>
+</body>
+<script>
+    document.getElementById("application-form").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        document.getElementById("error-messages").innerHTML = "";
+
+        let formData = new FormData();
+
+        let data = {
+            course_applied_for: document.getElementById("course_applied_for").value,
+            academic_year_of_admission: document.getElementById("academic_year_of_admission").value,
+            surname: document.getElementById("surname").value,
+            email_address: document.getElementById("email_address").value,
+            doctype: "APPLICATION FORM"
+        };
+
+        console.log("📦 Structured JSON data to send:", data);
+        formData.append("data", JSON.stringify(data));
+
+        let fileFields = ["senior_four", "academic_transcript", "senior_six", "ahpc_registration_cert"];
+        fileFields.forEach(fieldId => {
+            let fileInput = document.getElementById(fieldId);
+            if (fileInput && fileInput.files.length > 0) {
+                let file = fileInput.files[0];
+                formData.append(fieldId, file);
+                console.log(`📄 Attached file [${fieldId}]:`, {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type
+                });
+            } else {
+                console.log(`⚠️ No file attached for: ${fieldId}`);
+            }
+        });
+
+        // Optional: Show FormData contents using entries (for dev/debug)
+        console.log("📋 Final FormData entries:");
+        for (let pair of formData.entries()) {
+            if (pair[1] instanceof File) {
+                console.log(`${pair[0]} => File: ${pair[1].name} (${pair[1].size} bytes)`);
+            } else {
+                console.log(`${pair[0]} =>`, pair[1]);
+            }
+        }
+
+        try {
+            const csrfRes = await fetch("https://eihi.gorm.cloud/api/method/education_app.custom_api.application_form.regenerate_session", {
+                method: "GET",
+                credentials: "include"
+            });
+            const csrfJson = await csrfRes.json();
+            const csrfToken = csrfJson.message.csrf_token;
+            document.cookie = `X-Frappe-CSRF-Token=${csrfToken}; path=/`;
+
+            const response = await fetch("https://eihi.gorm.cloud/api/method/education_app.custom_api.application_form.create_document", {
+                method: "POST",
+                headers: {
+                    "X-Frappe-CSRF-Token": csrfToken
+                },
+                body: formData
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message);
+                console.log("✅ Success:", result);
+            } else {
+                console.error("❌ Server Error:", result);
+                displayErrorMessages(result.message || "Unknown error occurred.");
+            }
+        } catch (error) {
+            console.error("🚫 Request Failed:", error);
+            displayErrorMessages("An unexpected error occurred: " + error.message);
+        }
+    });
+
+    function displayErrorMessages(errors) {
+        const container = document.getElementById("error-messages");
+        if (typeof errors === "string") {
+            container.innerHTML = `<p>${errors}</p>`;
+        } else if (Array.isArray(errors)) {
+            container.innerHTML = errors.map(err => `<p>${err}</p>`).join('');
+        } else if (errors && typeof errors === "object") {
+            const msgs = Object.entries(errors).map(([k, v]) => `<p>${k}: ${v}</p>`);
+            container.innerHTML = msgs.join('');
+        } else {
+            container.innerHTML = "<p>Unknown error occurred.</p>";
+        }
+    }
+</script>
+
+</html>
+

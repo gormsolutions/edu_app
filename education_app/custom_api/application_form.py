@@ -67,65 +67,82 @@ def fetch_applications_status(applicant_form_id):
 
 
 import frappe
-import json
-
-# @frappe.whitelist(allow_guest=True)
-# def create_document():
-#     try:
-#         # Fetch JSON data from request
-#         data = frappe.form_dict.get("data")
-
-#         # Debugging: Print received data
-#         frappe.logger().info(f"Received Data: {data}")
-
-#         if not data:
-#             frappe.throw("No data provided", frappe.MandatoryError)
-
-#         # Ensure data is a valid JSON object
-#         if isinstance(data, str):
-#             data = json.loads(data)
-
-#         # Create new document
-#         doc = frappe.get_doc(data)
-#         doc.insert(ignore_permissions=True)
-
-#         return {"message": "Document created successfully", "name": doc.name}
-
-#     except Exception as e:
-#         frappe.logger().error(f"Error: {str(e)}")
-#         frappe.throw(f"Invalid JSON data: {str(e)}")
-
-import frappe
-import json
+from frappe.core.doctype.file.file import File
+from frappe import _
+from werkzeug.utils import secure_filename # type: ignore
 
 @frappe.whitelist(allow_guest=True)
 def create_document():
     try:
-        # Fetch JSON data from request
+        import json
+        from werkzeug.utils import secure_filename # type: ignore
+
+        # Get form data
         data = frappe.form_dict.get("data")
-
-        # Debugging: Print received data
-        frappe.logger().info(f"Received Data: {data}")
-
         if not data:
             frappe.throw("No data provided", frappe.MandatoryError)
 
-        # Ensure data is a valid JSON object
         if isinstance(data, str):
             data = json.loads(data)
 
-        # Extract the email address from the data
         email_address = data.get("email_address")
         if not email_address:
             frappe.throw("Email address not provided", frappe.MandatoryError)
 
-        # Create new document
+        # Prepare file field mapping
+        file_fields = [
+            "senior_four",
+            "academic_transcript",
+            "senior_six",
+            "ahpc_registration_cert"
+        ]
+
+        # Initialize one row to hold all file fields
+        attach_row = {
+            "doctype": "UPGRADERS ATTACH"
+        }
+
+        uploaded_files = []
+
+        for fieldname in file_fields:
+            file = frappe.request.files.get(fieldname)
+            if file:
+                if not file.filename.lower().endswith('.pdf'):
+                    frappe.throw(f"Only PDF files are allowed for {fieldname}.")
+
+                filename = secure_filename(file.filename)
+
+                file_doc = frappe.get_doc({
+                    "doctype": "File",
+                    "file_name": filename,
+                    "is_private": 0,
+                    "folder": "Home",
+                    "content": file.read()
+                })
+                file_doc.save()
+                frappe.db.commit()
+
+                # Add URL to correct field in attach_row
+                attach_row[fieldname] = file_doc.file_url
+                uploaded_files.append(file_doc.file_url)
+
+        # Only add to child table if at least one file was uploaded
+        if any(attach_row.get(field) for field in file_fields):
+            data["for_upgraders_attach"] = [attach_row]
+
+        # Create main doc
         doc = frappe.get_doc(data)
         doc.insert(ignore_permissions=True)
+        frappe.db.commit()
 
-        # Send email with docname
+        # Send confirmation email
         subject = f"Application Submitted Successfully: {doc.name}"
-        message = f"Dear {data.get('surname')},<br><br>Your application ({doc.name}) has been received successfully.<br><br>Please keep this document name for reference.<br><br>Thank you."
+        message = f"""
+        Dear {data.get('surname')},<br><br>
+        Your application (<strong>{doc.name}</strong>) has been received successfully.<br><br>
+        Please keep this document name for reference.<br><br>
+        Thank you.
+        """
 
         frappe.sendmail(
             recipients=[email_address],
@@ -136,13 +153,15 @@ def create_document():
         )
 
         return {
-            "message": "Document created successfully. Please check your email for your document name.",
-            "success": True
+            "message": "Document and PDF file(s) uploaded successfully.",
+            "success": True,
+            "docname": doc.name,
+            "file_urls": uploaded_files
         }
 
     except Exception as e:
-        frappe.logger().error(f"Error: {str(e)}")
-        frappe.throw(f"Invalid JSON data: {str(e)}")
+        frappe.log_error(frappe.get_traceback(), "Application Form Submission Failed")
+        frappe.throw(f"Invalid Request: {str(e)}")
 
 @frappe.whitelist(allow_guest=True)
 def get_academic_years_and_programs():
@@ -242,3 +261,58 @@ def submit_application_form(name):
     doc.submit()
 
     return _("Application Form {0} has been successfully submitted.").format(name)
+
+
+import frappe
+from frappe.utils.file_manager import save_file
+
+@frappe.whitelist(allow_guest=True)
+def upload_document():
+    files = frappe.request.files.getlist('file')  # Get all uploaded files
+    
+    if not files:
+        return {'message': 'No files uploaded'}
+
+    uploaded_files = []  # To store the names of successfully uploaded files
+
+    for filedata in files:
+        # Save each file to ERPNext using save_file method
+        file_doc = frappe.get_doc({
+            "doctype": "File",
+            "file_name": filedata.filename,
+            "file_url": None,
+            "folder": "Home",
+            "is_private": 0,  # 0 for public, 1 for private
+            "content": filedata.read()
+        })
+
+        file_doc.save()
+        uploaded_files.append(filedata.filename)
+
+    return {'message': 'Success', 'uploaded_files': uploaded_files}
+
+
+import frappe
+
+def force_session_refresh_without_logout(user):
+    """Regenerate CSRF token without logging the user out."""
+    # Ensure the user is authenticated
+    if frappe.session.user == user and user != "Guest":
+        # Generate and return a new CSRF token without logout
+        return frappe.sessions.get_csrf_token()
+    else:
+        raise frappe.PermissionError("User is not logged in or session is invalid.")
+
+@frappe.whitelist(allow_guest=True)
+def regenerate_session():
+    """Custom endpoint to regenerate the session and provide a new CSRF token."""
+    user = frappe.session.user
+    if user == "Guest":
+        return {"error": "Not logged in"}
+    
+    # Regenerate the CSRF token
+    try:
+        csrf_token = force_session_refresh_without_logout(user)
+        return {"csrf_token": csrf_token}
+    except frappe.PermissionError as e:
+        return {"error": str(e)}
